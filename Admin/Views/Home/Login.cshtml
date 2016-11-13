@@ -1,0 +1,47 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Login";
+}
+
+<!DOCTYPE html>
+<head>
+    <title>Ferit ARIBULAN | Admin Paneli</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+</head>
+<body">
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 login-box">
+                    @if (TempData["error"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["error"]</div>
+                        <br />
+                    }
+                    <div class="col-lg-12 login-head">
+                        Admin Paneli
+                    </div>
+                    <form class="form-horizontal" method="post" action="@Url.Action("Login","Home")">
+                        <div class="login-body">
+                            <div class="form-group login-form">
+                                <i class="fa fa-user" aria-hidden="true"></i> <label for="email">Mail Adresi</label>
+                                <input type="email" name="email" class="form-control" id="email">
+                                <i class="fa fa-key" aria-hidden="true"> </i><label for="password" style="margin-top:5px;">Şifre</label>
+                                <input type="password" name="password" class="form-control" id="password">
+                            </div>
+                        </div>
+                        <div class="login-footer">
+                            <button type="submit" class="btn btn-success login-btn">Giriş</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+    </html>
