@@ -36,5 +36,10 @@ namespace Admin.Controllers
 
             return View();
         }
+
+        public ActionResult Yetkisiz()
+        {
+            return View();
+        }
     }
 }

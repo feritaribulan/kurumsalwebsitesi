@@ -154,7 +154,9 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\UserTypesController.cs" />
     <Compile Include="Filters\AdminAuthorize.cs" />
@@ -167,6 +169,16 @@
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <Content Include="Views\Categories\Create.cshtml" />
+    <Content Include="Views\Categories\Delete.cshtml" />
+    <Content Include="Views\Categories\Details.cshtml" />
+    <Content Include="Views\Categories\Edit.cshtml" />
+    <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Posts\Create.cshtml" />
+    <Content Include="Views\Posts\Delete.cshtml" />
+    <Content Include="Views\Posts\Details.cshtml" />
+    <Content Include="Views\Posts\Edit.cshtml" />
+    <Content Include="Views\Posts\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -177,7 +189,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj">

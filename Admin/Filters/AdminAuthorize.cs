@@ -19,7 +19,6 @@ namespace Admin.Filters
                 {
                     return true;
                 }
-
             }
 
             httpContext.Response.Redirect("/Home/Login");

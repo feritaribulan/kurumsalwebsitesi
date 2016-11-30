@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 11/13/2016 13:36:41
+-- Date Created: 11/29/2016 17:02:31
 -- Generated from EDMX file: C:\Users\Ferit\documents\visual studio 2015\Projects\kurumsalwebsites\Data\Database.edmx
 -- --------------------------------------------------
 
@@ -55,6 +55,25 @@ CREATE TABLE [dbo].[UserTypeSet] (
 );
 GO
 
+-- Creating table 'CategorySet'
+CREATE TABLE [dbo].[CategorySet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [baslik] nvarchar(max)  NOT NULL,
+    [isim] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'PostSet'
+CREATE TABLE [dbo].[PostSet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [baslik] nvarchar(max)  NOT NULL,
+    [icerik] nvarchar(max)  NOT NULL,
+    [tarih] nvarchar(max)  NOT NULL,
+    [UserId] int  NOT NULL,
+    [CategoryId] int  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -68,6 +87,18 @@ GO
 -- Creating primary key on [Id] in table 'UserTypeSet'
 ALTER TABLE [dbo].[UserTypeSet]
 ADD CONSTRAINT [PK_UserTypeSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'CategorySet'
+ALTER TABLE [dbo].[CategorySet]
+ADD CONSTRAINT [PK_CategorySet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'PostSet'
+ALTER TABLE [dbo].[PostSet]
+ADD CONSTRAINT [PK_PostSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -88,6 +119,36 @@ GO
 CREATE INDEX [IX_FK_UserTypeUser]
 ON [dbo].[UserSet]
     ([UserTypeId]);
+GO
+
+-- Creating foreign key on [UserId] in table 'PostSet'
+ALTER TABLE [dbo].[PostSet]
+ADD CONSTRAINT [FK_UserPost]
+    FOREIGN KEY ([UserId])
+    REFERENCES [dbo].[UserSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserPost'
+CREATE INDEX [IX_FK_UserPost]
+ON [dbo].[PostSet]
+    ([UserId]);
+GO
+
+-- Creating foreign key on [CategoryId] in table 'PostSet'
+ALTER TABLE [dbo].[PostSet]
+ADD CONSTRAINT [FK_PostCategory]
+    FOREIGN KEY ([CategoryId])
+    REFERENCES [dbo].[CategorySet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PostCategory'
+CREATE INDEX [IX_FK_PostCategory]
+ON [dbo].[PostSet]
+    ([CategoryId]);
 GO
 
 -- --------------------------------------------------

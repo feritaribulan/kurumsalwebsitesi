@@ -12,23 +12,18 @@ namespace Data
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Category
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public User()
+        public Category()
         {
             this.Post = new HashSet<Post>();
         }
     
         public int Id { get; set; }
-        public int UserTypeId { get; set; }
-        public string name { get; set; }
-        public string surname { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        public string email { get; set; }
+        public string baslik { get; set; }
+        public string isim { get; set; }
     
-        public virtual UserType UserType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Post> Post { get; set; }
     }

@@ -8,9 +8,19 @@
   <EntityContainer Name="DatabaseStoreContainer">
     <EntitySet Name="UserSet" EntityType="Database.Store.UserSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserTypeSet" EntityType="Database.Store.UserTypeSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CategorySet" EntityType="Database.Store.CategorySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PostSet" EntityType="Database.Store.PostSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="UserTypeUser" Association="Database.Store.UserTypeUser">
       <End Role="UserType" EntitySet="UserTypeSet" />
       <End Role="User" EntitySet="UserSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserPost" Association="Database.Store.UserPost">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Post" EntitySet="PostSet" />
+    </AssociationSet>
+    <AssociationSet Name="PostCategory" Association="Database.Store.PostCategory">
+      <End Role="Post" EntitySet="PostSet" />
+      <End Role="Category" EntitySet="CategorySet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
@@ -32,6 +42,25 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="type" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
+  <EntityType Name="CategorySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="baslik" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="isim" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PostSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="baslik" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="icerik" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="tarih" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+  </EntityType>
   <Association Name="UserTypeUser">
     <End Role="UserType" Type="Database.Store.UserTypeSet" Multiplicity="1" />
     <End Role="User" Type="Database.Store.UserSet" Multiplicity="*" />
@@ -41,6 +70,30 @@
       </Principal>
       <Dependent Role="User">
         <PropertyRef Name="UserTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserPost">
+    <End Role="User" Type="Database.Store.UserSet" Multiplicity="1" />
+    <End Role="Post" Type="Database.Store.PostSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PostCategory">
+    <End Role="Post" Type="Database.Store.PostSet" Multiplicity="*" />
+    <End Role="Category" Type="Database.Store.CategorySet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="CategoryId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -55,6 +108,18 @@
             <End Role="UserType" EntitySet="UserTypeSet" />
             <End Role="User" EntitySet="UserSet" />
           </AssociationSet>
+          <EntitySet Name="CategorySet" EntityType="Database.Category" />
+          <EntitySet Name="PostSet" EntityType="Database.Post" />
+          <AssociationSet Name="UserPost" Association="Database.UserPost">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Post" EntitySet="PostSet" />
+          </AssociationSet>
+          <AssociationSet Name="PostCategory" Association="Database.PostCategory">
+            <End Role="Post" EntitySet="PostSet" />
+            <End Role="Category" EntitySet="CategorySet" />
+          </AssociationSet>
+          <EntitySet Name="ProductSet" EntityType="Database.Product" />
+          <EntitySet Name="PaymentSet" EntityType="Database.Payment" />
         </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -68,6 +133,7 @@
           <Property Name="password" Type="String" Nullable="false" />
           <Property Name="email" Type="String" Nullable="false" />
           <NavigationProperty Name="UserType" Relationship="Database.UserTypeUser" FromRole="User" ToRole="UserType" />
+          <NavigationProperty Name="Post" Relationship="Database.UserPost" FromRole="User" ToRole="Post" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -89,6 +155,68 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="baslik" Type="String" Nullable="false" />
+          <Property Name="isim" Type="String" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="Database.PostCategory" FromRole="Category" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="baslik" Type="String" Nullable="false" />
+          <Property Name="icerik" Type="String" Nullable="false" />
+          <Property Name="tarih" Type="String" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Database.UserPost" FromRole="Post" ToRole="User" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="Database.PostCategory" FromRole="Post" ToRole="Category" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="UserPost">
+          <End Type="Database.User" Role="User" Multiplicity="1" />
+          <End Type="Database.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PostCategory">
+          <End Type="Database.Post" Role="Post" Multiplicity="*" />
+          <End Type="Database.Category" Role="Category" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="false" />
+          <Property Name="text" Type="String" Nullable="false" />
+          <Property Name="pay" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -113,6 +241,27 @@
         <MappingFragment StoreEntitySet="UserTypeSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="type" ColumnName="type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CategorySet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.Category)">
+        <MappingFragment StoreEntitySet="CategorySet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="baslik" ColumnName="baslik" />
+          <ScalarProperty Name="isim" ColumnName="isim" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PostSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.Post)">
+        <MappingFragment StoreEntitySet="PostSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="baslik" ColumnName="baslik" />
+          <ScalarProperty Name="icerik" ColumnName="icerik" />
+          <ScalarProperty Name="tarih" ColumnName="tarih" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

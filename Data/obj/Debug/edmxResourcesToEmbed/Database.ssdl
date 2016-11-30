@@ -3,9 +3,19 @@
   <EntityContainer Name="DatabaseStoreContainer">
     <EntitySet Name="UserSet" EntityType="Database.Store.UserSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserTypeSet" EntityType="Database.Store.UserTypeSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CategorySet" EntityType="Database.Store.CategorySet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PostSet" EntityType="Database.Store.PostSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="UserTypeUser" Association="Database.Store.UserTypeUser">
       <End Role="UserType" EntitySet="UserTypeSet" />
       <End Role="User" EntitySet="UserSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserPost" Association="Database.Store.UserPost">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Post" EntitySet="PostSet" />
+    </AssociationSet>
+    <AssociationSet Name="PostCategory" Association="Database.Store.PostCategory">
+      <End Role="Post" EntitySet="PostSet" />
+      <End Role="Category" EntitySet="CategorySet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
@@ -27,6 +37,25 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="type" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
+  <EntityType Name="CategorySet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="baslik" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="isim" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PostSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="baslik" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="icerik" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="tarih" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+  </EntityType>
   <Association Name="UserTypeUser">
     <End Role="UserType" Type="Database.Store.UserTypeSet" Multiplicity="1" />
     <End Role="User" Type="Database.Store.UserSet" Multiplicity="*" />
@@ -36,6 +65,30 @@
       </Principal>
       <Dependent Role="User">
         <PropertyRef Name="UserTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserPost">
+    <End Role="User" Type="Database.Store.UserSet" Multiplicity="1" />
+    <End Role="Post" Type="Database.Store.PostSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PostCategory">
+    <End Role="Post" Type="Database.Store.PostSet" Multiplicity="*" />
+    <End Role="Category" Type="Database.Store.CategorySet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="CategoryId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
