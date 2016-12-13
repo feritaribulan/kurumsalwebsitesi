@@ -37,9 +37,10 @@ namespace Admin.Controllers
             return View();
         }
 
-        public ActionResult Yetkisiz()
+        public ActionResult Logout()
         {
-            return View();
+            Session.Remove("user");
+            return Redirect("Index");
         }
     }
 }

@@ -15,9 +15,9 @@ namespace Data
     public partial class Post
     {
         public int Id { get; set; }
-        public string baslik { get; set; }
-        public string icerik { get; set; }
-        public string tarih { get; set; }
+        public string title { get; set; }
+        public string text { get; set; }
+        public string date { get; set; }
         public int UserId { get; set; }
         public int CategoryId { get; set; }
     

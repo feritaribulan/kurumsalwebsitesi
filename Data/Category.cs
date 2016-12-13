@@ -21,8 +21,8 @@ namespace Data
         }
     
         public int Id { get; set; }
-        public string baslik { get; set; }
-        public string isim { get; set; }
+        public string title { get; set; }
+        public string name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Post> Post { get; set; }

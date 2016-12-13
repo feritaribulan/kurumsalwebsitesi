@@ -1,0 +1,45 @@
+﻿@model Data.Pages
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h3>Bu sayfayı gerçekten silmek istiyor musunuz?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Slug
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+           Başlık
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+           İçerik
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Text)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Sil" class="btn btn-default" /> |
+            @Html.ActionLink("Geri Dön", "Index")
+        </div>
+    }
+</div>

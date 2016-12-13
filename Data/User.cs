@@ -18,6 +18,8 @@ namespace Data
         public User()
         {
             this.Post = new HashSet<Post>();
+            this.Payment = new HashSet<Payment>();
+            this.Cart = new HashSet<Cart>();
         }
     
         public int Id { get; set; }
@@ -31,5 +33,9 @@ namespace Data
         public virtual UserType UserType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Post> Post { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Payment> Payment { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Cart> Cart { get; set; }
     }
 }

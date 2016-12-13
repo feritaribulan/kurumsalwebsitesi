@@ -1,0 +1,33 @@
+﻿@model Data.CategoryProduct
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Ürün Kategori Detayı</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Slug
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            Başlık
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Düzenle", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Geri Dön", "Index")
+</p>

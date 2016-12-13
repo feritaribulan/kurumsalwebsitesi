@@ -3,24 +3,19 @@
 @{
     ViewBag.Title = "Delete";
 }
-
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
+<h3>Bu kullanıcıyı gerçekten silmek istiyor musunuz?</h3>
 <div>
-    <h4>User</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.name)
+            Adı
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.surname)
+            Soyadı
         </dt>
 
         <dd>
@@ -28,7 +23,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.username)
+            Kullanıcı Adı
         </dt>
 
         <dd>
@@ -36,7 +31,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.password)
+            Şifre
         </dt>
 
         <dd>
@@ -44,7 +39,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.email)
+            eMail
         </dt>
 
         <dd>
@@ -52,7 +47,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.UserType.type)
+            Yetki
         </dt>
 
         <dd>
@@ -65,8 +60,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Sil" class="btn btn-default" /> |
+            @Html.ActionLink("Geri Dön", "Index")
         </div>
     }
 </div>

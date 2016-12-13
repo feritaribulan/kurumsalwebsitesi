@@ -26,8 +26,8 @@
       <EntityTypeMapping TypeName="IsTypeOf(Database.Category)">
         <MappingFragment StoreEntitySet="CategorySet">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="baslik" ColumnName="baslik" />
-          <ScalarProperty Name="isim" ColumnName="isim" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="name" ColumnName="name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -35,11 +35,63 @@
       <EntityTypeMapping TypeName="IsTypeOf(Database.Post)">
         <MappingFragment StoreEntitySet="PostSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="baslik" ColumnName="baslik" />
-          <ScalarProperty Name="icerik" ColumnName="icerik" />
-          <ScalarProperty Name="tarih" ColumnName="tarih" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="text" ColumnName="text" />
+          <ScalarProperty Name="date" ColumnName="date" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.Product)">
+        <MappingFragment StoreEntitySet="ProductSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CategoryProductId" ColumnName="CategoryProductId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="text" ColumnName="text" />
+          <ScalarProperty Name="pay" ColumnName="pay" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PaymentSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.Payment)">
+        <MappingFragment StoreEntitySet="PaymentSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="pay" ColumnName="pay" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CategoryProductSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.CategoryProduct)">
+        <MappingFragment StoreEntitySet="CategoryProductSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PagesSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.Pages)">
+        <MappingFragment StoreEntitySet="PagesSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CartSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.Cart)">
+        <MappingFragment StoreEntitySet="CartSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="Statu" ColumnName="Statu" />
+          <ScalarProperty Name="Court" ColumnName="Court" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

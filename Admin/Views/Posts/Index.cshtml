@@ -7,24 +7,24 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Yeni", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.baslik)
+           Başlık   
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.icerik)
+          İçerik
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.tarih)
+            Tarih
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User.name)
+           Kullanıcı
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Category.baslik)
+            Kategori
         </th>
         <th></th>
     </tr>
@@ -32,24 +32,24 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.baslik)
+            @Html.DisplayFor(modelItem => item.title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.icerik)
+            @Html.DisplayFor(modelItem => item.text)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.tarih)
+            @Html.DisplayFor(modelItem => item.date)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.User.name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Category.baslik)
+            @Html.DisplayFor(modelItem => item.Category.name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Düzenle", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Detay", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Sil", "Delete", new { id=item.Id })
         </td>
     </tr>
 }

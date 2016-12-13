@@ -10,6 +10,11 @@
     <EntitySet Name="UserTypeSet" EntityType="Database.Store.UserTypeSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CategorySet" EntityType="Database.Store.CategorySet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PostSet" EntityType="Database.Store.PostSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProductSet" EntityType="Database.Store.ProductSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PaymentSet" EntityType="Database.Store.PaymentSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CategoryProductSet" EntityType="Database.Store.CategoryProductSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PagesSet" EntityType="Database.Store.PagesSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CartSet" EntityType="Database.Store.CartSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="UserTypeUser" Association="Database.Store.UserTypeUser">
       <End Role="UserType" EntitySet="UserTypeSet" />
       <End Role="User" EntitySet="UserSet" />
@@ -21,6 +26,26 @@
     <AssociationSet Name="PostCategory" Association="Database.Store.PostCategory">
       <End Role="Post" EntitySet="PostSet" />
       <End Role="Category" EntitySet="CategorySet" />
+    </AssociationSet>
+    <AssociationSet Name="ProductPayment" Association="Database.Store.ProductPayment">
+      <End Role="Product" EntitySet="ProductSet" />
+      <End Role="Payment" EntitySet="PaymentSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserPayment" Association="Database.Store.UserPayment">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Payment" EntitySet="PaymentSet" />
+    </AssociationSet>
+    <AssociationSet Name="ProductCategoryProduct" Association="Database.Store.ProductCategoryProduct">
+      <End Role="Product" EntitySet="ProductSet" />
+      <End Role="CategoryProduct" EntitySet="CategoryProductSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserCart" Association="Database.Store.UserCart">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Cart" EntitySet="CartSet" />
+    </AssociationSet>
+    <AssociationSet Name="ProductCart" Association="Database.Store.ProductCart">
+      <End Role="Product" EntitySet="ProductSet" />
+      <End Role="Cart" EntitySet="CartSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
@@ -47,19 +72,66 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="baslik" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="isim" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="PostSet">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="baslik" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="icerik" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="tarih" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="text" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="date" Type="nvarchar(max)" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
     <Property Name="CategoryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryProductId" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="text" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="pay" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PaymentSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="pay" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CategoryProductSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PagesSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CartSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="Statu" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Court" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <Association Name="UserTypeUser">
     <End Role="UserType" Type="Database.Store.UserTypeSet" Multiplicity="1" />
@@ -97,6 +169,66 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="ProductPayment">
+    <End Role="Product" Type="Database.Store.ProductSet" Multiplicity="1" />
+    <End Role="Payment" Type="Database.Store.PaymentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserPayment">
+    <End Role="User" Type="Database.Store.UserSet" Multiplicity="1" />
+    <End Role="Payment" Type="Database.Store.PaymentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductCategoryProduct">
+    <End Role="Product" Type="Database.Store.ProductSet" Multiplicity="*" />
+    <End Role="CategoryProduct" Type="Database.Store.CategoryProductSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="CategoryProduct">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="CategoryProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserCart">
+    <End Role="User" Type="Database.Store.UserSet" Multiplicity="1" />
+    <End Role="Cart" Type="Database.Store.CartSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Cart">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductCart">
+    <End Role="Product" Type="Database.Store.ProductSet" Multiplicity="1" />
+    <End Role="Cart" Type="Database.Store.CartSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Cart">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -120,6 +252,29 @@
           </AssociationSet>
           <EntitySet Name="ProductSet" EntityType="Database.Product" />
           <EntitySet Name="PaymentSet" EntityType="Database.Payment" />
+          <AssociationSet Name="ProductPayment" Association="Database.ProductPayment">
+            <End Role="Product" EntitySet="ProductSet" />
+            <End Role="Payment" EntitySet="PaymentSet" />
+          </AssociationSet>
+          <AssociationSet Name="UserPayment" Association="Database.UserPayment">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Payment" EntitySet="PaymentSet" />
+          </AssociationSet>
+          <EntitySet Name="CategoryProductSet" EntityType="Database.CategoryProduct" />
+          <EntitySet Name="PagesSet" EntityType="Database.Pages" />
+          <AssociationSet Name="ProductCategoryProduct" Association="Database.ProductCategoryProduct">
+            <End Role="Product" EntitySet="ProductSet" />
+            <End Role="CategoryProduct" EntitySet="CategoryProductSet" />
+          </AssociationSet>
+          <EntitySet Name="CartSet" EntityType="Database.Cart" />
+          <AssociationSet Name="UserCart" Association="Database.UserCart">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Cart" EntitySet="CartSet" />
+          </AssociationSet>
+          <AssociationSet Name="ProductCart" Association="Database.ProductCart">
+            <End Role="Product" EntitySet="ProductSet" />
+            <End Role="Cart" EntitySet="CartSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -134,6 +289,8 @@
           <Property Name="email" Type="String" Nullable="false" />
           <NavigationProperty Name="UserType" Relationship="Database.UserTypeUser" FromRole="User" ToRole="UserType" />
           <NavigationProperty Name="Post" Relationship="Database.UserPost" FromRole="User" ToRole="Post" />
+          <NavigationProperty Name="Payment" Relationship="Database.UserPayment" FromRole="User" ToRole="Payment" />
+          <NavigationProperty Name="Cart" Relationship="Database.UserCart" FromRole="User" ToRole="Cart" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -160,8 +317,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="baslik" Type="String" Nullable="false" />
-          <Property Name="isim" Type="String" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" />
           <NavigationProperty Name="Post" Relationship="Database.PostCategory" FromRole="Category" ToRole="Post" />
         </EntityType>
         <EntityType Name="Post">
@@ -169,9 +326,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="baslik" Type="String" Nullable="false" />
-          <Property Name="icerik" Type="String" Nullable="false" />
-          <Property Name="tarih" Type="String" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="false" />
+          <Property Name="text" Type="String" Nullable="false" />
+          <Property Name="date" Type="String" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Database.UserPost" FromRole="Post" ToRole="User" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Category" Relationship="Database.PostCategory" FromRole="Post" ToRole="Category" />
@@ -206,17 +363,116 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryProductId" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" Nullable="false" />
           <Property Name="title" Type="String" Nullable="false" />
           <Property Name="text" Type="String" Nullable="false" />
           <Property Name="pay" Type="String" Nullable="false" />
+          <NavigationProperty Name="Payment" Relationship="Database.ProductPayment" FromRole="Product" ToRole="Payment" />
+          <NavigationProperty Name="CategoryProduct" Relationship="Database.ProductCategoryProduct" FromRole="Product" ToRole="CategoryProduct" />
+          <NavigationProperty Name="Cart" Relationship="Database.ProductCart" FromRole="Product" ToRole="Cart" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Product" Relationship="Database.ProductPayment" FromRole="Payment" ToRole="Product" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Database.UserPayment" FromRole="Payment" ToRole="User" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="pay" Type="String" Nullable="false" />
         </EntityType>
+        <Association Name="ProductPayment">
+          <End Type="Database.Product" Role="Product" Multiplicity="1" />
+          <End Type="Database.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserPayment">
+          <End Type="Database.User" Role="User" Multiplicity="1" />
+          <End Type="Database.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CategoryProduct">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Database.ProductCategoryProduct" FromRole="CategoryProduct" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Pages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" />
+          <Property Name="Text" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="ProductCategoryProduct">
+          <End Type="Database.Product" Role="Product" Multiplicity="*" />
+          <End Type="Database.CategoryProduct" Role="CategoryProduct" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="CategoryProduct">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="CategoryProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="Statu" Type="String" Nullable="false" />
+          <Property Name="Court" Type="String" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Database.UserCart" FromRole="Cart" ToRole="User" />
+          <NavigationProperty Name="Product" Relationship="Database.ProductCart" FromRole="Cart" ToRole="Product" />
+        </EntityType>
+        <Association Name="UserCart">
+          <End Type="Database.User" Role="User" Multiplicity="1" />
+          <End Type="Database.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ProductCart">
+          <End Type="Database.Product" Role="Product" Multiplicity="1" />
+          <End Type="Database.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -248,8 +504,8 @@
       <EntityTypeMapping TypeName="IsTypeOf(Database.Category)">
         <MappingFragment StoreEntitySet="CategorySet">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="baslik" ColumnName="baslik" />
-          <ScalarProperty Name="isim" ColumnName="isim" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="name" ColumnName="name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -257,11 +513,63 @@
       <EntityTypeMapping TypeName="IsTypeOf(Database.Post)">
         <MappingFragment StoreEntitySet="PostSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="baslik" ColumnName="baslik" />
-          <ScalarProperty Name="icerik" ColumnName="icerik" />
-          <ScalarProperty Name="tarih" ColumnName="tarih" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="text" ColumnName="text" />
+          <ScalarProperty Name="date" ColumnName="date" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.Product)">
+        <MappingFragment StoreEntitySet="ProductSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CategoryProductId" ColumnName="CategoryProductId" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="text" ColumnName="text" />
+          <ScalarProperty Name="pay" ColumnName="pay" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PaymentSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.Payment)">
+        <MappingFragment StoreEntitySet="PaymentSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="pay" ColumnName="pay" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CategoryProductSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.CategoryProduct)">
+        <MappingFragment StoreEntitySet="CategoryProductSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PagesSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.Pages)">
+        <MappingFragment StoreEntitySet="PagesSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CartSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.Cart)">
+        <MappingFragment StoreEntitySet="CartSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="Statu" ColumnName="Statu" />
+          <ScalarProperty Name="Court" ColumnName="Court" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

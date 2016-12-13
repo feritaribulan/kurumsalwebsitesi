@@ -1,0 +1,44 @@
+﻿@model Data.Payment
+
+@{
+    ViewBag.Title = "Delete";
+}
+<h3>Bu ödemeyi gerçekten silmek istiyor musunuz?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Fiyat
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pay)
+        </dd>
+
+        <dt>
+            Ürün
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.name)
+        </dd>
+
+        <dt>
+            Kullanıcı
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Sil" class="btn btn-default" /> |
+            @Html.ActionLink("Geri Dön", "Index")
+        </div>
+    }
+</div>

@@ -106,7 +106,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cart.cs">
+      <DependentUpon>Database.tt</DependentUpon>
+    </Compile>
     <Compile Include="Category.cs">
+      <DependentUpon>Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CategoryProduct.cs">
       <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Database.Context.cs">
@@ -123,6 +129,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Database.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages.cs">
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Payment.cs">
       <DependentUpon>Database.tt</DependentUpon>
