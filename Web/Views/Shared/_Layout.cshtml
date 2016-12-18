@@ -44,6 +44,18 @@
                     <div class="navbar navbar-default text-center" style="line-height: 46px;">
                          Kategoriler
                     </div>
+                    <div class="navbar navbar-default text-center">
+                        <div>
+                            <ul class="list-unstyled">
+                                @foreach (var item in   HttpContext.Current.Application["categories"] as List<Data.Category>)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index", "Home", new { id= item.Id })">@item.title</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
