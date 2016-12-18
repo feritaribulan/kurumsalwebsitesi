@@ -42,17 +42,14 @@
             <div class="col-md-3">
                 <div class="row">
                     <div class="navbar navbar-default text-center" style="line-height: 46px;">
-                         Kategoriler
+                         Menü
                     </div>
                     <div class="navbar navbar-default text-center">
                         <div>
                             <ul class="list-unstyled">
-                                @foreach (var item in   HttpContext.Current.Application["categories"] as List<Data.Category>)
-                                {
-                                    <li>
-                                        <a href="@Url.Action("Index", "Home", new { id= item.Id })">@item.title</a>
-                                    </li>
-                                }
+                                <li>@Html.ActionLink("Sepet", "Index", "Cart", null, null)</li>
+                                <li>@Html.ActionLink("Ödemeler", "Index", "Credit", null, null)</li>
+                                <li>@Html.ActionLink("Ürünler", "Index", "Product", null, null)</li>
                             </ul>
                         </div>
                     </div>
@@ -70,5 +67,6 @@
     </footer>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+    @RenderSection("js", false)
 </body>
 </html>

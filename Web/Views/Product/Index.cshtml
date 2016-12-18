@@ -3,55 +3,100 @@
 @{
     ViewBag.Title = "Index";
 }
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Adı</th>
+            <th>Detayı</th>
+            <th>Fiyatı</th>
+            <th colspan="2" class="text-center">İşlem</th>
+        </tr>
+    </thead>
+    @foreach (var product in Model)
+    {
+        <tr>
+            <td>@product.Id</td>
+        </tr>
+    }
+    @foreach (var product in Model)
+    {
+        <tr>
+            <td>@product.Id</td>
+            <td>@product.title</td>
+            <td>@Html.Raw(product.text)</td>
+            <td>@product.pay TL</td>
+            <td>
+                @if ()
+                {
 
-<h2>Index</h2>
+                }
+            </td>
+            <td>
+                @if (UserHelper.isMember() == true)
+                {
+                    if (project.ProjectAccess.FirstOrDefault(q => q.UserId == UserHelper.Current().Id) == null)
+                    {
+                        @Html.ActionLink("Hızlı Satın Al", "Index", "Credit", new { id = project.Id }, null)
+                    }
+                    else
+                    {
+                        @Html.ActionLink("İndir", "Download", "Projects", new { id = project.Id }, null)
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.text)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.pay)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CategoryProduct.Name)
-        </th>
-        <th></th>
-    </tr>
+                    }
+                }
+                else
+                {
+                    @Html.ActionLink("İndirmek için giriş yap", "LoginForm", "User")
+                }
+            </td>
+            @{
+                string statusAdd = String.Empty;
+                string statusRemove = "hide";
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.text)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.pay)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CategoryProduct.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+                if (UserHelper.isMember() == true)
+                {
+                    if (project.Cart.FirstOrDefault(q =>
+                            q.Status == Data.CartStatus.New &&
+                            q.UserId == UserHelper.Current().Id &&
+                            q.ProjectId == project.Id) != null
+                        )
+                    {
+                        statusAdd = "hide";
+                        statusRemove = String.Empty;
+                    }
+                    else if (project.ProjectAccess.FirstOrDefault(q => q.UserId == UserHelper.Current().Id) != null)
+                    {
+                        statusAdd = "hide";
+                        statusRemove = "hide";
+                        <td></td>
+                    }
+                }
 
+                <td id="tdAdd@(project.Id)" class="@statusAdd">
+                    @Ajax.ActionLink("Sepete Ekle", "AddToCart", new { @id = project.Id },
+                        new AjaxOptions { HttpMethod = "POST", OnSuccess = "ToggleCartButtons" })
+                </td>
+
+                <td id="tdRemove@(project.Id)" class="@statusRemove">
+                    @Ajax.ActionLink("Çıkar", "RemoveFromCart", new { @id = project.Id },
+                  new AjaxOptions { HttpMethod = "POST", OnSuccess = "ToggleCartButtons" })
+                </td>
+
+            }
+        </tr>
+                }
 </table>
+@section js{
+    <script src="/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        function ToggleCartButtons(result) {
+            if (result == "login") {
+                alert("Sepete eklemek için giriş yapınız");
+            } else {
+                $("#tdAdd" + result).toggleClass("hide");
+                $("#tdRemove" + result).toggleClass("hide");
+            }
+        }
+    </script>
+}

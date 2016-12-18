@@ -19,10 +19,6 @@
     </AssociationSet>
     <EntitySet Name="ProductSet" EntityType="Database.Product" />
     <EntitySet Name="PaymentSet" EntityType="Database.Payment" />
-    <AssociationSet Name="ProductPayment" Association="Database.ProductPayment">
-      <End Role="Product" EntitySet="ProductSet" />
-      <End Role="Payment" EntitySet="PaymentSet" />
-    </AssociationSet>
     <AssociationSet Name="UserPayment" Association="Database.UserPayment">
       <End Role="User" EntitySet="UserSet" />
       <End Role="Payment" EntitySet="PaymentSet" />
@@ -42,6 +38,19 @@
       <End Role="Product" EntitySet="ProductSet" />
       <End Role="Cart" EntitySet="CartSet" />
     </AssociationSet>
+    <EntitySet Name="ProductAccessSet" EntityType="Database.ProductAccess" />
+    <AssociationSet Name="ProductProductAccess" Association="Database.ProductProductAccess">
+      <End Role="Product" EntitySet="ProductSet" />
+      <End Role="ProductAccess" EntitySet="ProductAccessSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserProductAccess" Association="Database.UserProductAccess">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="ProductAccess" EntitySet="ProductAccessSet" />
+    </AssociationSet>
+    <AssociationSet Name="PaymentProductAccess" Association="Database.PaymentProductAccess">
+      <End Role="Payment" EntitySet="PaymentSet" />
+      <End Role="ProductAccess" EntitySet="ProductAccessSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="User">
     <Key>
@@ -58,6 +67,7 @@
     <NavigationProperty Name="Post" Relationship="Database.UserPost" FromRole="User" ToRole="Post" />
     <NavigationProperty Name="Payment" Relationship="Database.UserPayment" FromRole="User" ToRole="Payment" />
     <NavigationProperty Name="Cart" Relationship="Database.UserCart" FromRole="User" ToRole="Cart" />
+    <NavigationProperty Name="ProductAccess" Relationship="Database.UserProductAccess" FromRole="User" ToRole="ProductAccess" />
   </EntityType>
   <EntityType Name="UserType">
     <Key>
@@ -134,34 +144,22 @@
     <Property Name="name" Type="String" Nullable="false" />
     <Property Name="title" Type="String" Nullable="false" />
     <Property Name="text" Type="String" Nullable="false" />
-    <Property Name="pay" Type="String" Nullable="false" />
-    <NavigationProperty Name="Payment" Relationship="Database.ProductPayment" FromRole="Product" ToRole="Payment" />
     <NavigationProperty Name="CategoryProduct" Relationship="Database.ProductCategoryProduct" FromRole="Product" ToRole="CategoryProduct" />
     <NavigationProperty Name="Cart" Relationship="Database.ProductCart" FromRole="Product" ToRole="Cart" />
+    <NavigationProperty Name="ProductAccess" Relationship="Database.ProductProductAccess" FromRole="Product" ToRole="ProductAccess" />
+    <Property Name="Price" Type="Decimal" Nullable="false" />
   </EntityType>
   <EntityType Name="Payment">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <NavigationProperty Name="Product" Relationship="Database.ProductPayment" FromRole="Payment" ToRole="Product" />
-    <Property Name="ProductId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="User" Relationship="Database.UserPayment" FromRole="Payment" ToRole="User" />
     <Property Name="UserId" Type="Int32" Nullable="false" />
-    <Property Name="pay" Type="String" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Nullable="false" />
+    <NavigationProperty Name="ProductAccess" Relationship="Database.PaymentProductAccess" FromRole="Payment" ToRole="ProductAccess" />
+    <Property Name="Date" Type="DateTime" Nullable="false" />
   </EntityType>
-  <Association Name="ProductPayment">
-    <End Type="Database.Product" Role="Product" Multiplicity="1" />
-    <End Type="Database.Payment" Role="Payment" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Product">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Payment">
-        <PropertyRef Name="ProductId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="UserPayment">
     <End Type="Database.User" Role="User" Multiplicity="1" />
     <End Type="Database.Payment" Role="Payment" Multiplicity="*" />
@@ -211,8 +209,8 @@
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="UserId" Type="Int32" Nullable="false" />
     <Property Name="ProductId" Type="Int32" Nullable="false" />
-    <Property Name="Statu" Type="String" Nullable="false" />
-    <Property Name="Court" Type="String" Nullable="false" />
+    <Property Name="Statu" Type="Database.CartStatus" Nullable="false" />
+    <Property Name="Court" Type="Int32" Nullable="false" />
     <NavigationProperty Name="User" Relationship="Database.UserCart" FromRole="Cart" ToRole="User" />
     <NavigationProperty Name="Product" Relationship="Database.ProductCart" FromRole="Cart" ToRole="Product" />
   </EntityType>
@@ -240,4 +238,48 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="ProductAccess">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Product" Relationship="Database.ProductProductAccess" FromRole="ProductAccess" ToRole="Product" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Database.UserProductAccess" FromRole="ProductAccess" ToRole="User" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Payment" Relationship="Database.PaymentProductAccess" FromRole="ProductAccess" ToRole="Payment" />
+  </EntityType>
+  <Association Name="ProductProductAccess">
+    <End Type="Database.Product" Role="Product" Multiplicity="1" />
+    <End Type="Database.ProductAccess" Role="ProductAccess" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProductAccess">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserProductAccess">
+    <End Type="Database.User" Role="User" Multiplicity="1" />
+    <End Type="Database.ProductAccess" Role="ProductAccess" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProductAccess">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PaymentProductAccess">
+    <End Type="Database.Payment" Role="Payment" Multiplicity="0..1" />
+    <End Type="Database.ProductAccess" Role="ProductAccess" Multiplicity="1" />
+  </Association>
+  <EnumType Name="CartStatus">
+    <Member Name="New" />
+    <Member Name="Paid" />
+    <Member Name="Cancelled" />
+  </EnumType>
 </Schema>

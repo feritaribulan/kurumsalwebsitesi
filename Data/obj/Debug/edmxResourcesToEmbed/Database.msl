@@ -51,7 +51,7 @@
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="title" ColumnName="title" />
           <ScalarProperty Name="text" ColumnName="text" />
-          <ScalarProperty Name="pay" ColumnName="pay" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -59,9 +59,9 @@
       <EntityTypeMapping TypeName="IsTypeOf(Database.Payment)">
         <MappingFragment StoreEntitySet="PaymentSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="pay" ColumnName="pay" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -95,5 +95,22 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ProductAccessSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.ProductAccess)">
+        <MappingFragment StoreEntitySet="ProductAccessSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="PaymentProductAccess" TypeName="Database.PaymentProductAccess" StoreEntitySet="PaymentSet">
+      <EndProperty Name="ProductAccess">
+        <ScalarProperty Name="Id" ColumnName="ProductAccess_Id" />
+      </EndProperty>
+      <EndProperty Name="Payment">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 12/13/2016 09:12:37
+-- Date Created: 12/18/2016 18:11:37
 -- Generated from EDMX file: D:\Visual Studio Proje\kurumsalwebsites\Data\Database.edmx
 -- --------------------------------------------------
 
@@ -26,11 +26,26 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_PostCategory]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PostSet] DROP CONSTRAINT [FK_PostCategory];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ProductPayment]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[PaymentSet] DROP CONSTRAINT [FK_ProductPayment];
-GO
 IF OBJECT_ID(N'[dbo].[FK_UserPayment]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PaymentSet] DROP CONSTRAINT [FK_UserPayment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ProductCategoryProduct]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ProductSet] DROP CONSTRAINT [FK_ProductCategoryProduct];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserCart]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CartSet] DROP CONSTRAINT [FK_UserCart];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ProductCart]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CartSet] DROP CONSTRAINT [FK_ProductCart];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ProductProductAccess]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ProductAccessSet] DROP CONSTRAINT [FK_ProductProductAccess];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserProductAccess]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ProductAccessSet] DROP CONSTRAINT [FK_UserProductAccess];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PaymentProductAccess]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PaymentSet] DROP CONSTRAINT [FK_PaymentProductAccess];
 GO
 
 -- --------------------------------------------------
@@ -54,6 +69,18 @@ IF OBJECT_ID(N'[dbo].[ProductSet]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[PaymentSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PaymentSet];
+GO
+IF OBJECT_ID(N'[dbo].[CategoryProductSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CategoryProductSet];
+GO
+IF OBJECT_ID(N'[dbo].[PagesSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[PagesSet];
+GO
+IF OBJECT_ID(N'[dbo].[CartSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CartSet];
+GO
+IF OBJECT_ID(N'[dbo].[ProductAccessSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ProductAccessSet];
 GO
 
 -- --------------------------------------------------
@@ -105,16 +132,17 @@ CREATE TABLE [dbo].[ProductSet] (
     [name] nvarchar(max)  NOT NULL,
     [title] nvarchar(max)  NOT NULL,
     [text] nvarchar(max)  NOT NULL,
-    [pay] nvarchar(max)  NOT NULL
+    [Price] decimal(18,0)  NOT NULL
 );
 GO
 
 -- Creating table 'PaymentSet'
 CREATE TABLE [dbo].[PaymentSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [ProductId] int  NOT NULL,
     [UserId] int  NOT NULL,
-    [pay] nvarchar(max)  NOT NULL
+    [Amount] decimal(18,0)  NOT NULL,
+    [Date] datetime  NOT NULL,
+    [ProductAccess_Id] int  NOT NULL
 );
 GO
 
@@ -140,8 +168,16 @@ CREATE TABLE [dbo].[CartSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [UserId] int  NOT NULL,
     [ProductId] int  NOT NULL,
-    [Statu] nvarchar(max)  NOT NULL,
-    [Court] nvarchar(max)  NOT NULL
+    [Statu] int  NOT NULL,
+    [Court] int  NOT NULL
+);
+GO
+
+-- Creating table 'ProductAccessSet'
+CREATE TABLE [dbo].[ProductAccessSet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [ProductId] int  NOT NULL,
+    [UserId] int  NOT NULL
 );
 GO
 
@@ -203,6 +239,12 @@ ADD CONSTRAINT [PK_CartSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
+-- Creating primary key on [Id] in table 'ProductAccessSet'
+ALTER TABLE [dbo].[ProductAccessSet]
+ADD CONSTRAINT [PK_ProductAccessSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
@@ -250,21 +292,6 @@ GO
 CREATE INDEX [IX_FK_PostCategory]
 ON [dbo].[PostSet]
     ([CategoryId]);
-GO
-
--- Creating foreign key on [ProductId] in table 'PaymentSet'
-ALTER TABLE [dbo].[PaymentSet]
-ADD CONSTRAINT [FK_ProductPayment]
-    FOREIGN KEY ([ProductId])
-    REFERENCES [dbo].[ProductSet]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ProductPayment'
-CREATE INDEX [IX_FK_ProductPayment]
-ON [dbo].[PaymentSet]
-    ([ProductId]);
 GO
 
 -- Creating foreign key on [UserId] in table 'PaymentSet'
@@ -325,6 +352,51 @@ GO
 CREATE INDEX [IX_FK_ProductCart]
 ON [dbo].[CartSet]
     ([ProductId]);
+GO
+
+-- Creating foreign key on [ProductId] in table 'ProductAccessSet'
+ALTER TABLE [dbo].[ProductAccessSet]
+ADD CONSTRAINT [FK_ProductProductAccess]
+    FOREIGN KEY ([ProductId])
+    REFERENCES [dbo].[ProductSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ProductProductAccess'
+CREATE INDEX [IX_FK_ProductProductAccess]
+ON [dbo].[ProductAccessSet]
+    ([ProductId]);
+GO
+
+-- Creating foreign key on [UserId] in table 'ProductAccessSet'
+ALTER TABLE [dbo].[ProductAccessSet]
+ADD CONSTRAINT [FK_UserProductAccess]
+    FOREIGN KEY ([UserId])
+    REFERENCES [dbo].[UserSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserProductAccess'
+CREATE INDEX [IX_FK_UserProductAccess]
+ON [dbo].[ProductAccessSet]
+    ([UserId]);
+GO
+
+-- Creating foreign key on [ProductAccess_Id] in table 'PaymentSet'
+ALTER TABLE [dbo].[PaymentSet]
+ADD CONSTRAINT [FK_PaymentProductAccess]
+    FOREIGN KEY ([ProductAccess_Id])
+    REFERENCES [dbo].[ProductAccessSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PaymentProductAccess'
+CREATE INDEX [IX_FK_PaymentProductAccess]
+ON [dbo].[PaymentSet]
+    ([ProductAccess_Id]);
 GO
 
 -- --------------------------------------------------

@@ -17,8 +17,8 @@ namespace Data
         public int Id { get; set; }
         public int UserId { get; set; }
         public int ProductId { get; set; }
-        public string Statu { get; set; }
-        public string Court { get; set; }
+        public CartStatus Statu { get; set; }
+        public int Court { get; set; }
     
         public virtual User User { get; set; }
         public virtual Product Product { get; set; }

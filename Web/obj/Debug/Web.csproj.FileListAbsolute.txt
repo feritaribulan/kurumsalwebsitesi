@@ -34,3 +34,6 @@ D:\Visual Studio Proje\kurumsalwebsites\Web\bin\EntityFramework.xml
 D:\Visual Studio Proje\kurumsalwebsites\Web\obj\Debug\Web.csprojResolveAssemblyReference.cache
 D:\Visual Studio Proje\kurumsalwebsites\Web\obj\Debug\Web.dll
 D:\Visual Studio Proje\kurumsalwebsites\Web\obj\Debug\Web.pdb
+D:\Visual Studio Proje\kurumsalwebsites\Web\bin\EntityFramework.dll
+D:\Visual Studio Proje\kurumsalwebsites\Web\bin\EntityFramework.SqlServer.dll
+D:\Visual Studio Proje\kurumsalwebsites\Web\bin\EntityFramework.SqlServer.xml

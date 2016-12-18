@@ -34,5 +34,6 @@ namespace Data
         public virtual DbSet<CategoryProduct> CategoryProductSet { get; set; }
         public virtual DbSet<Pages> PagesSet { get; set; }
         public virtual DbSet<Cart> CartSet { get; set; }
+        public virtual DbSet<ProductAccess> ProductAccessSet { get; set; }
     }
 }

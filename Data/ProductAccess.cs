@@ -12,14 +12,14 @@ namespace Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Payment
+    public partial class ProductAccess
     {
         public int Id { get; set; }
+        public int ProductId { get; set; }
         public int UserId { get; set; }
-        public decimal Amount { get; set; }
-        public System.DateTime Date { get; set; }
     
+        public virtual Product Product { get; set; }
         public virtual User User { get; set; }
-        public virtual ProductAccess ProductAccess { get; set; }
+        public virtual Payment Payment { get; set; }
     }
 }

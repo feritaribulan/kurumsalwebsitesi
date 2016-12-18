@@ -17,8 +17,8 @@ namespace Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product()
         {
-            this.Payment = new HashSet<Payment>();
             this.Cart = new HashSet<Cart>();
+            this.ProductAccess = new HashSet<ProductAccess>();
         }
     
         public int Id { get; set; }
@@ -26,12 +26,12 @@ namespace Data
         public string name { get; set; }
         public string title { get; set; }
         public string text { get; set; }
-        public string pay { get; set; }
+        public decimal Price { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Payment> Payment { get; set; }
         public virtual CategoryProduct CategoryProduct { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cart> Cart { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProductAccess> ProductAccess { get; set; }
     }
 }
