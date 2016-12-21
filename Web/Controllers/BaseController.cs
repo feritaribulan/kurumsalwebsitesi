@@ -17,7 +17,7 @@ namespace Web.Controllers
 
             if (httpContext.Application["categories"] == null)
             {
-                httpContext.Application["categories"] = db.CategorySet.ToList();
+                httpContext.Application["categories"] = db.PostSet.ToList();
             }
         }
     }

@@ -1,0 +1,37 @@
+﻿<!-- Blog Search Well -->
+<div class="well">
+    <h4>Arama</h4>
+    @using (Html.BeginForm("Index", "Posts", FormMethod.Get))
+    {
+        <div class="input-group">
+            <input type="text" name="query" value="@Request.QueryString["query"]" class="form-control">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+    }
+    <!-- /.input-group -->
+</div>
+@if (Session["user"] == null)
+{
+    @Html.Partial("Login", new Web.ViewModel.UserViewModel())
+}
+else
+{
+    var user = (Data.User)Session["user"];
+    @Html.Partial("Profile", user)
+}
+<!-- Blog Categories Well -->
+<div class="well">
+    <h4>Menü</h4>
+    <div>
+        <ul class="list-unstyled">
+            <li>@Html.ActionLink("Sepet", "Index", "Cart", null, null)</li>
+            <!--<li>@Html.ActionLink("Ödemeler", "Index", "Credit", null, null)</li> -->
+            <li>@Html.ActionLink("Ürünler", "Index", "Product", null, null)</li>
+        </ul>
+    </div>
+    <!-- /.row -->
+</div>

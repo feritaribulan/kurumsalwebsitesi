@@ -23,9 +23,6 @@
         <th>
            Kullanıcı
         </th>
-        <th>
-            Kategori
-        </th>
         <th></th>
     </tr>
 
@@ -42,9 +39,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.User.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category.name)
         </td>
         <td>
             @Html.ActionLink("Düzenle", "Edit", new { id=item.Id }) |

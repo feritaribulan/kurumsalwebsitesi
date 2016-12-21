@@ -22,13 +22,11 @@ namespace Data
         }
     
         public int Id { get; set; }
-        public int CategoryProductId { get; set; }
         public string name { get; set; }
         public string title { get; set; }
         public string text { get; set; }
         public decimal Price { get; set; }
     
-        public virtual CategoryProduct CategoryProduct { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cart> Cart { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

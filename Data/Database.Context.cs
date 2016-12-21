@@ -27,13 +27,12 @@ namespace Data
     
         public virtual DbSet<User> UserSet { get; set; }
         public virtual DbSet<UserType> UserTypeSet { get; set; }
-        public virtual DbSet<Category> CategorySet { get; set; }
         public virtual DbSet<Post> PostSet { get; set; }
         public virtual DbSet<Product> ProductSet { get; set; }
         public virtual DbSet<Payment> PaymentSet { get; set; }
-        public virtual DbSet<CategoryProduct> CategoryProductSet { get; set; }
         public virtual DbSet<Pages> PagesSet { get; set; }
         public virtual DbSet<Cart> CartSet { get; set; }
         public virtual DbSet<ProductAccess> ProductAccessSet { get; set; }
+        public virtual DbSet<Comment> CommentSet { get; set; }
     }
 }

@@ -22,15 +22,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="CategorySet">
-      <EntityTypeMapping TypeName="IsTypeOf(Database.Category)">
-        <MappingFragment StoreEntitySet="CategorySet">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="title" ColumnName="title" />
-          <ScalarProperty Name="name" ColumnName="name" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="PostSet">
       <EntityTypeMapping TypeName="IsTypeOf(Database.Post)">
         <MappingFragment StoreEntitySet="PostSet">
@@ -39,7 +30,6 @@
           <ScalarProperty Name="text" ColumnName="text" />
           <ScalarProperty Name="date" ColumnName="date" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -47,7 +37,6 @@
       <EntityTypeMapping TypeName="IsTypeOf(Database.Product)">
         <MappingFragment StoreEntitySet="ProductSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="CategoryProductId" ColumnName="CategoryProductId" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="title" ColumnName="title" />
           <ScalarProperty Name="text" ColumnName="text" />
@@ -62,15 +51,6 @@
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Amount" ColumnName="Amount" />
           <ScalarProperty Name="Date" ColumnName="Date" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="CategoryProductSet">
-      <EntityTypeMapping TypeName="IsTypeOf(Database.CategoryProduct)">
-        <MappingFragment StoreEntitySet="CategoryProductSet">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Title" ColumnName="Title" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -100,6 +80,18 @@
         <MappingFragment StoreEntitySet="ProductAccessSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CommentSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.Comment)">
+        <MappingFragment StoreEntitySet="CommentSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Verified" ColumnName="Verified" />
+          <ScalarProperty Name="PostId" ColumnName="PostId" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
         </MappingFragment>
       </EntityTypeMapping>

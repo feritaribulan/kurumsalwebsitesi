@@ -10,14 +10,14 @@ using Data;
 
 namespace Admin.Controllers
 {
-    public class PaymentsController : Controller
+    public class PaymentsController : BaseController
     {
         private DatabaseContainer db = new DatabaseContainer();
 
         // GET: Payments
         public ActionResult Index()
         {
-            var paymentSet = db.PaymentSet.Include(p => p.Product).Include(p => p.User);
+            var paymentSet = db.PaymentSet.Include(p => p.User);
             return View(paymentSet.ToList());
         }
 
@@ -34,94 +34,6 @@ namespace Admin.Controllers
                 return HttpNotFound();
             }
             return View(payment);
-        }
-
-        // GET: Payments/Create
-        public ActionResult Create()
-        {
-            ViewBag.ProductId = new SelectList(db.ProductSet, "Id", "name");
-            ViewBag.UserId = new SelectList(db.UserSet, "Id", "name");
-            return View();
-        }
-
-        // POST: Payments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ProductId,UserId,pay")] Payment payment)
-        {
-            if (ModelState.IsValid)
-            {
-                db.PaymentSet.Add(payment);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.ProductId = new SelectList(db.ProductSet, "Id", "name", payment.ProductId);
-            ViewBag.UserId = new SelectList(db.UserSet, "Id", "name", payment.UserId);
-            return View(payment);
-        }
-
-        // GET: Payments/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Payment payment = db.PaymentSet.Find(id);
-            if (payment == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.ProductId = new SelectList(db.ProductSet, "Id", "name", payment.ProductId);
-            ViewBag.UserId = new SelectList(db.UserSet, "Id", "name", payment.UserId);
-            return View(payment);
-        }
-
-        // POST: Payments/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ProductId,UserId,pay")] Payment payment)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(payment).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.ProductId = new SelectList(db.ProductSet, "Id", "name", payment.ProductId);
-            ViewBag.UserId = new SelectList(db.UserSet, "Id", "name", payment.UserId);
-            return View(payment);
-        }
-
-        // GET: Payments/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Payment payment = db.PaymentSet.Find(id);
-            if (payment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(payment);
-        }
-
-        // POST: Payments/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Payment payment = db.PaymentSet.Find(id);
-            db.PaymentSet.Remove(payment);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

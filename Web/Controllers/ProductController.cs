@@ -8,7 +8,7 @@ using Web.Helpers;
 
 namespace Web.Controllers
 {
-    public class ProjectsController : BaseController
+    public class ProductController : BaseController
     {
         // GET: Projects
         public ActionResult Index()

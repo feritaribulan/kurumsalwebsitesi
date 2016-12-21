@@ -8,14 +8,13 @@
   <EntityContainer Name="DatabaseStoreContainer">
     <EntitySet Name="UserSet" EntityType="Database.Store.UserSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserTypeSet" EntityType="Database.Store.UserTypeSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="CategorySet" EntityType="Database.Store.CategorySet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PostSet" EntityType="Database.Store.PostSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ProductSet" EntityType="Database.Store.ProductSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PaymentSet" EntityType="Database.Store.PaymentSet" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="CategoryProductSet" EntityType="Database.Store.CategoryProductSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PagesSet" EntityType="Database.Store.PagesSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CartSet" EntityType="Database.Store.CartSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ProductAccessSet" EntityType="Database.Store.ProductAccessSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CommentSet" EntityType="Database.Store.CommentSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="UserTypeUser" Association="Database.Store.UserTypeUser">
       <End Role="UserType" EntitySet="UserTypeSet" />
       <End Role="User" EntitySet="UserSet" />
@@ -24,17 +23,9 @@
       <End Role="User" EntitySet="UserSet" />
       <End Role="Post" EntitySet="PostSet" />
     </AssociationSet>
-    <AssociationSet Name="PostCategory" Association="Database.Store.PostCategory">
-      <End Role="Post" EntitySet="PostSet" />
-      <End Role="Category" EntitySet="CategorySet" />
-    </AssociationSet>
     <AssociationSet Name="UserPayment" Association="Database.Store.UserPayment">
       <End Role="User" EntitySet="UserSet" />
       <End Role="Payment" EntitySet="PaymentSet" />
-    </AssociationSet>
-    <AssociationSet Name="ProductCategoryProduct" Association="Database.Store.ProductCategoryProduct">
-      <End Role="Product" EntitySet="ProductSet" />
-      <End Role="CategoryProduct" EntitySet="CategoryProductSet" />
     </AssociationSet>
     <AssociationSet Name="UserCart" Association="Database.Store.UserCart">
       <End Role="User" EntitySet="UserSet" />
@@ -56,6 +47,14 @@
       <End Role="Payment" EntitySet="PaymentSet" />
       <End Role="ProductAccess" EntitySet="ProductAccessSet" />
     </AssociationSet>
+    <AssociationSet Name="PostComment" Association="Database.Store.PostComment">
+      <End Role="Post" EntitySet="PostSet" />
+      <End Role="Comment" EntitySet="CommentSet" />
+    </AssociationSet>
+    <AssociationSet Name="UserComment" Association="Database.Store.UserComment">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Comment" EntitySet="CommentSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
     <Key>
@@ -76,14 +75,6 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="type" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
-  <EntityType Name="CategorySet">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="title" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
   <EntityType Name="PostSet">
     <Key>
       <PropertyRef Name="Id" />
@@ -93,14 +84,12 @@
     <Property Name="text" Type="nvarchar(max)" Nullable="false" />
     <Property Name="date" Type="nvarchar(max)" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
-    <Property Name="CategoryId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ProductSet">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CategoryProductId" Type="int" Nullable="false" />
     <Property Name="name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="title" Type="nvarchar(max)" Nullable="false" />
     <Property Name="text" Type="nvarchar(max)" Nullable="false" />
@@ -115,14 +104,6 @@
     <Property Name="Amount" Type="decimal" Nullable="false" />
     <Property Name="Date" Type="datetime" Nullable="false" />
     <Property Name="ProductAccess_Id" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="CategoryProductSet">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="PagesSet">
     <Key>
@@ -151,6 +132,17 @@
     <Property Name="ProductId" Type="int" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="CommentSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Verified" Type="bit" Nullable="false" />
+    <Property Name="PostId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
   <Association Name="UserTypeUser">
     <End Role="UserType" Type="Database.Store.UserTypeSet" Multiplicity="1" />
     <End Role="User" Type="Database.Store.UserSet" Multiplicity="*" />
@@ -175,18 +167,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="PostCategory">
-    <End Role="Post" Type="Database.Store.PostSet" Multiplicity="*" />
-    <End Role="Category" Type="Database.Store.CategorySet" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="Category">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Post">
-        <PropertyRef Name="CategoryId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="UserPayment">
     <End Role="User" Type="Database.Store.UserSet" Multiplicity="1" />
     <End Role="Payment" Type="Database.Store.PaymentSet" Multiplicity="*" />
@@ -196,18 +176,6 @@
       </Principal>
       <Dependent Role="Payment">
         <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="ProductCategoryProduct">
-    <End Role="Product" Type="Database.Store.ProductSet" Multiplicity="*" />
-    <End Role="CategoryProduct" Type="Database.Store.CategoryProductSet" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="CategoryProduct">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Product">
-        <PropertyRef Name="CategoryProductId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -271,6 +239,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="PostComment">
+    <End Role="Post" Type="Database.Store.PostSet" Multiplicity="1" />
+    <End Role="Comment" Type="Database.Store.CommentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="PostId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UserComment">
+    <End Role="User" Type="Database.Store.UserSet" Multiplicity="1" />
+    <End Role="Comment" Type="Database.Store.CommentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -282,15 +274,10 @@
             <End Role="UserType" EntitySet="UserTypeSet" />
             <End Role="User" EntitySet="UserSet" />
           </AssociationSet>
-          <EntitySet Name="CategorySet" EntityType="Database.Category" />
           <EntitySet Name="PostSet" EntityType="Database.Post" />
           <AssociationSet Name="UserPost" Association="Database.UserPost">
             <End Role="User" EntitySet="UserSet" />
             <End Role="Post" EntitySet="PostSet" />
-          </AssociationSet>
-          <AssociationSet Name="PostCategory" Association="Database.PostCategory">
-            <End Role="Post" EntitySet="PostSet" />
-            <End Role="Category" EntitySet="CategorySet" />
           </AssociationSet>
           <EntitySet Name="ProductSet" EntityType="Database.Product" />
           <EntitySet Name="PaymentSet" EntityType="Database.Payment" />
@@ -298,12 +285,7 @@
             <End Role="User" EntitySet="UserSet" />
             <End Role="Payment" EntitySet="PaymentSet" />
           </AssociationSet>
-          <EntitySet Name="CategoryProductSet" EntityType="Database.CategoryProduct" />
           <EntitySet Name="PagesSet" EntityType="Database.Pages" />
-          <AssociationSet Name="ProductCategoryProduct" Association="Database.ProductCategoryProduct">
-            <End Role="Product" EntitySet="ProductSet" />
-            <End Role="CategoryProduct" EntitySet="CategoryProductSet" />
-          </AssociationSet>
           <EntitySet Name="CartSet" EntityType="Database.Cart" />
           <AssociationSet Name="UserCart" Association="Database.UserCart">
             <End Role="User" EntitySet="UserSet" />
@@ -326,6 +308,15 @@
             <End Role="Payment" EntitySet="PaymentSet" />
             <End Role="ProductAccess" EntitySet="ProductAccessSet" />
           </AssociationSet>
+          <EntitySet Name="CommentSet" EntityType="Database.Comment" />
+          <AssociationSet Name="PostComment" Association="Database.PostComment">
+            <End Role="Post" EntitySet="PostSet" />
+            <End Role="Comment" EntitySet="CommentSet" />
+          </AssociationSet>
+          <AssociationSet Name="UserComment" Association="Database.UserComment">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Comment" EntitySet="CommentSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -343,6 +334,7 @@
           <NavigationProperty Name="Payment" Relationship="Database.UserPayment" FromRole="User" ToRole="Payment" />
           <NavigationProperty Name="Cart" Relationship="Database.UserCart" FromRole="User" ToRole="Cart" />
           <NavigationProperty Name="ProductAccess" Relationship="Database.UserProductAccess" FromRole="User" ToRole="ProductAccess" />
+          <NavigationProperty Name="Comment" Relationship="Database.UserComment" FromRole="User" ToRole="Comment" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -364,15 +356,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Category">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="title" Type="String" Nullable="false" />
-          <Property Name="name" Type="String" Nullable="false" />
-          <NavigationProperty Name="Post" Relationship="Database.PostCategory" FromRole="Category" ToRole="Post" />
-        </EntityType>
         <EntityType Name="Post">
           <Key>
             <PropertyRef Name="Id" />
@@ -383,8 +366,7 @@
           <Property Name="date" Type="String" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Database.UserPost" FromRole="Post" ToRole="User" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Category" Relationship="Database.PostCategory" FromRole="Post" ToRole="Category" />
-          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Comment" Relationship="Database.PostComment" FromRole="Post" ToRole="Comment" />
         </EntityType>
         <Association Name="UserPost">
           <End Type="Database.User" Role="User" Multiplicity="1" />
@@ -398,28 +380,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="PostCategory">
-          <End Type="Database.Post" Role="Post" Multiplicity="*" />
-          <End Type="Database.Category" Role="Category" Multiplicity="1" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Post">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CategoryProductId" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" Nullable="false" />
           <Property Name="title" Type="String" Nullable="false" />
           <Property Name="text" Type="String" Nullable="false" />
-          <NavigationProperty Name="CategoryProduct" Relationship="Database.ProductCategoryProduct" FromRole="Product" ToRole="CategoryProduct" />
           <NavigationProperty Name="Cart" Relationship="Database.ProductCart" FromRole="Product" ToRole="Cart" />
           <NavigationProperty Name="ProductAccess" Relationship="Database.ProductProductAccess" FromRole="Product" ToRole="ProductAccess" />
           <Property Name="Price" Type="Decimal" Nullable="false" />
@@ -447,15 +415,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CategoryProduct">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" />
-          <Property Name="Title" Type="String" Nullable="false" />
-          <NavigationProperty Name="Product" Relationship="Database.ProductCategoryProduct" FromRole="CategoryProduct" ToRole="Product" />
-        </EntityType>
         <EntityType Name="Pages">
           <Key>
             <PropertyRef Name="Id" />
@@ -465,18 +424,6 @@
           <Property Name="Title" Type="String" Nullable="false" />
           <Property Name="Text" Type="String" Nullable="false" />
         </EntityType>
-        <Association Name="ProductCategoryProduct">
-          <End Type="Database.Product" Role="Product" Multiplicity="*" />
-          <End Type="Database.CategoryProduct" Role="CategoryProduct" Multiplicity="1" />
-          <ReferentialConstraint>
-            <Principal Role="CategoryProduct">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="CategoryProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Cart">
           <Key>
             <PropertyRef Name="Id" />
@@ -557,6 +504,43 @@
           <Member Name="Paid" />
           <Member Name="Cancelled" />
         </EnumType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="Verified" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="Database.PostComment" FromRole="Comment" ToRole="Post" />
+          <Property Name="PostId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Database.UserComment" FromRole="Comment" ToRole="User" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="PostComment">
+          <End Type="Database.Post" Role="Post" Multiplicity="1" />
+          <End Type="Database.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="PostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserComment">
+          <End Type="Database.User" Role="User" Multiplicity="1" />
+          <End Type="Database.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -584,15 +568,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="CategorySet">
-      <EntityTypeMapping TypeName="IsTypeOf(Database.Category)">
-        <MappingFragment StoreEntitySet="CategorySet">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="title" ColumnName="title" />
-          <ScalarProperty Name="name" ColumnName="name" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="PostSet">
       <EntityTypeMapping TypeName="IsTypeOf(Database.Post)">
         <MappingFragment StoreEntitySet="PostSet">
@@ -601,7 +576,6 @@
           <ScalarProperty Name="text" ColumnName="text" />
           <ScalarProperty Name="date" ColumnName="date" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -609,7 +583,6 @@
       <EntityTypeMapping TypeName="IsTypeOf(Database.Product)">
         <MappingFragment StoreEntitySet="ProductSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="CategoryProductId" ColumnName="CategoryProductId" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="title" ColumnName="title" />
           <ScalarProperty Name="text" ColumnName="text" />
@@ -624,15 +597,6 @@
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="Amount" ColumnName="Amount" />
           <ScalarProperty Name="Date" ColumnName="Date" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="CategoryProductSet">
-      <EntityTypeMapping TypeName="IsTypeOf(Database.CategoryProduct)">
-        <MappingFragment StoreEntitySet="CategoryProductSet">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Title" ColumnName="Title" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -662,6 +626,18 @@
         <MappingFragment StoreEntitySet="ProductAccessSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CommentSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Database.Comment)">
+        <MappingFragment StoreEntitySet="CommentSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Verified" ColumnName="Verified" />
+          <ScalarProperty Name="PostId" ColumnName="PostId" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
         </MappingFragment>
       </EntityTypeMapping>

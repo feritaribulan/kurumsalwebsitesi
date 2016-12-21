@@ -17,7 +17,7 @@ namespace Admin.Controllers
         // GET: Posts
         public ActionResult Index()
         {
-            var postSet = db.PostSet.Include(p => p.User).Include(p => p.Category);
+            var postSet = db.PostSet.Include(p => p.User);
             return View(postSet.ToList());
         }
 
@@ -40,16 +40,15 @@ namespace Admin.Controllers
         public ActionResult Create()
         {
             ViewBag.UserId = new SelectList(db.UserSet, "Id", "name");
-            ViewBag.CategoryId = new SelectList(db.CategorySet, "Id", "baslik");
             return View();
         }
 
         // POST: Posts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see     .
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,baslik,icerik,tarih,UserId,CategoryId")] Post post)
+        public ActionResult Create([Bind(Include = "Id,title,text,date,UserId")] Post post)
         {
             if (ModelState.IsValid)
             {
@@ -59,7 +58,6 @@ namespace Admin.Controllers
             }
 
             ViewBag.UserId = new SelectList(db.UserSet, "Id", "name", post.UserId);
-            ViewBag.CategoryId = new SelectList(db.CategorySet, "Id", "baslik", post.CategoryId);
             return View(post);
         }
 
@@ -76,7 +74,6 @@ namespace Admin.Controllers
                 return HttpNotFound();
             }
             ViewBag.UserId = new SelectList(db.UserSet, "Id", "name", post.UserId);
-            ViewBag.CategoryId = new SelectList(db.CategorySet, "Id", "baslik", post.CategoryId);
             return View(post);
         }
 
@@ -94,7 +91,6 @@ namespace Admin.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.UserId = new SelectList(db.UserSet, "Id", "name", post.UserId);
-            ViewBag.CategoryId = new SelectList(db.CategorySet, "Id", "baslik", post.CategoryId);
             return View(post);
         }
 

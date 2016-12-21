@@ -4,27 +4,26 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7cf9c22b5cdf404b8bc978e5a3c64cb1" Name="Diagram1" ZoomLevel="86" DisplayType="true" >
+      <Diagram DiagramId="7cf9c22b5cdf404b8bc978e5a3c64cb1" Name="Diagram1" ZoomLevel="112" DisplayType="true" >
         <EntityTypeShape EntityType="Database.User" Width="1.5" PointX="0.75" PointY="0.625" />
-        <EntityTypeShape EntityType="Database.UserType" Width="1.5" PointX="2.875" PointY="0.625" />
+        <EntityTypeShape EntityType="Database.UserType" Width="1.5" PointX="4.125" PointY="0.75" />
         <AssociationConnector Association="Database.UserTypeUser" />
-        <EntityTypeShape EntityType="Database.Category" Width="1.5" PointX="4.625" PointY="0.875" />
-        <EntityTypeShape EntityType="Database.Post" Width="1.5" PointX="6.625" PointY="0.875" />
+        <EntityTypeShape EntityType="Database.Post" Width="1.5" PointX="8.875" PointY="0.75" />
         <AssociationConnector Association="Database.UserPost" />
-        <AssociationConnector Association="Database.PostCategory" />
-        <EntityTypeShape EntityType="Database.Product" Width="1.5" PointX="8.75" PointY="0.875" />
-        <EntityTypeShape EntityType="Database.Payment" Width="1.5" PointX="12.125" PointY="3.875" />
+        <EntityTypeShape EntityType="Database.Product" Width="1.5" PointX="11.25" PointY="0.75" />
+        <EntityTypeShape EntityType="Database.Payment" Width="1.5" PointX="13.375" PointY="3.125" />
         <AssociationConnector Association="Database.UserPayment" />
-        <EntityTypeShape EntityType="Database.CategoryProduct" Width="1.5" PointX="2.875" PointY="5" />
-        <EntityTypeShape EntityType="Database.Pages" Width="1.5" PointX="10.875" PointY="0.875" />
-        <AssociationConnector Association="Database.ProductCategoryProduct" />
+        <EntityTypeShape EntityType="Database.Pages" Width="1.5" PointX="13.375" PointY="0.75" />
         <EntityTypeShape EntityType="Database.Cart" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
         <AssociationConnector Association="Database.UserCart" />
         <AssociationConnector Association="Database.ProductCart" />
-        <EntityTypeShape EntityType="Database.ProductAccess" Width="1.5" PointX="5.25" PointY="5.125" />
+        <EntityTypeShape EntityType="Database.ProductAccess" Width="1.5" PointX="4" PointY="3.375" />
         <AssociationConnector Association="Database.ProductProductAccess" />
         <AssociationConnector Association="Database.UserProductAccess" />
         <AssociationConnector Association="Database.PaymentProductAccess" />
+        <EntityTypeShape EntityType="Database.Comment" Width="1.5" PointX="7.25" PointY="4.25" />
+        <AssociationConnector Association="Database.PostComment" />
+        <AssociationConnector Association="Database.UserComment" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

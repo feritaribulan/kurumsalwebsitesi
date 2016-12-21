@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 12/18/2016 18:11:37
+-- Date Created: 12/21/2016 13:03:13
 -- Generated from EDMX file: D:\Visual Studio Proje\kurumsalwebsites\Data\Database.edmx
 -- --------------------------------------------------
 
@@ -23,14 +23,8 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_UserPost]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PostSet] DROP CONSTRAINT [FK_UserPost];
 GO
-IF OBJECT_ID(N'[dbo].[FK_PostCategory]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[PostSet] DROP CONSTRAINT [FK_PostCategory];
-GO
 IF OBJECT_ID(N'[dbo].[FK_UserPayment]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PaymentSet] DROP CONSTRAINT [FK_UserPayment];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ProductCategoryProduct]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ProductSet] DROP CONSTRAINT [FK_ProductCategoryProduct];
 GO
 IF OBJECT_ID(N'[dbo].[FK_UserCart]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[CartSet] DROP CONSTRAINT [FK_UserCart];
@@ -47,6 +41,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_PaymentProductAccess]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PaymentSet] DROP CONSTRAINT [FK_PaymentProductAccess];
 GO
+IF OBJECT_ID(N'[dbo].[FK_PostComment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CommentSet] DROP CONSTRAINT [FK_PostComment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserComment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CommentSet] DROP CONSTRAINT [FK_UserComment];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -58,9 +58,6 @@ GO
 IF OBJECT_ID(N'[dbo].[UserTypeSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserTypeSet];
 GO
-IF OBJECT_ID(N'[dbo].[CategorySet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[CategorySet];
-GO
 IF OBJECT_ID(N'[dbo].[PostSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PostSet];
 GO
@@ -70,9 +67,6 @@ GO
 IF OBJECT_ID(N'[dbo].[PaymentSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PaymentSet];
 GO
-IF OBJECT_ID(N'[dbo].[CategoryProductSet]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[CategoryProductSet];
-GO
 IF OBJECT_ID(N'[dbo].[PagesSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PagesSet];
 GO
@@ -81,6 +75,9 @@ IF OBJECT_ID(N'[dbo].[CartSet]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[ProductAccessSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ProductAccessSet];
+GO
+IF OBJECT_ID(N'[dbo].[CommentSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CommentSet];
 GO
 
 -- --------------------------------------------------
@@ -106,29 +103,19 @@ CREATE TABLE [dbo].[UserTypeSet] (
 );
 GO
 
--- Creating table 'CategorySet'
-CREATE TABLE [dbo].[CategorySet] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [title] nvarchar(max)  NOT NULL,
-    [name] nvarchar(max)  NOT NULL
-);
-GO
-
 -- Creating table 'PostSet'
 CREATE TABLE [dbo].[PostSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [title] nvarchar(max)  NOT NULL,
     [text] nvarchar(max)  NOT NULL,
     [date] nvarchar(max)  NOT NULL,
-    [UserId] int  NOT NULL,
-    [CategoryId] int  NOT NULL
+    [UserId] int  NOT NULL
 );
 GO
 
 -- Creating table 'ProductSet'
 CREATE TABLE [dbo].[ProductSet] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [CategoryProductId] int  NOT NULL,
     [name] nvarchar(max)  NOT NULL,
     [title] nvarchar(max)  NOT NULL,
     [text] nvarchar(max)  NOT NULL,
@@ -143,14 +130,6 @@ CREATE TABLE [dbo].[PaymentSet] (
     [Amount] decimal(18,0)  NOT NULL,
     [Date] datetime  NOT NULL,
     [ProductAccess_Id] int  NOT NULL
-);
-GO
-
--- Creating table 'CategoryProductSet'
-CREATE TABLE [dbo].[CategoryProductSet] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [Title] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -181,6 +160,17 @@ CREATE TABLE [dbo].[ProductAccessSet] (
 );
 GO
 
+-- Creating table 'CommentSet'
+CREATE TABLE [dbo].[CommentSet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Text] nvarchar(max)  NOT NULL,
+    [Date] datetime  NOT NULL,
+    [Verified] bit  NOT NULL,
+    [PostId] int  NOT NULL,
+    [UserId] int  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -194,12 +184,6 @@ GO
 -- Creating primary key on [Id] in table 'UserTypeSet'
 ALTER TABLE [dbo].[UserTypeSet]
 ADD CONSTRAINT [PK_UserTypeSet]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'CategorySet'
-ALTER TABLE [dbo].[CategorySet]
-ADD CONSTRAINT [PK_CategorySet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -221,12 +205,6 @@ ADD CONSTRAINT [PK_PaymentSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'CategoryProductSet'
-ALTER TABLE [dbo].[CategoryProductSet]
-ADD CONSTRAINT [PK_CategoryProductSet]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Id] in table 'PagesSet'
 ALTER TABLE [dbo].[PagesSet]
 ADD CONSTRAINT [PK_PagesSet]
@@ -242,6 +220,12 @@ GO
 -- Creating primary key on [Id] in table 'ProductAccessSet'
 ALTER TABLE [dbo].[ProductAccessSet]
 ADD CONSTRAINT [PK_ProductAccessSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'CommentSet'
+ALTER TABLE [dbo].[CommentSet]
+ADD CONSTRAINT [PK_CommentSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -279,21 +263,6 @@ ON [dbo].[PostSet]
     ([UserId]);
 GO
 
--- Creating foreign key on [CategoryId] in table 'PostSet'
-ALTER TABLE [dbo].[PostSet]
-ADD CONSTRAINT [FK_PostCategory]
-    FOREIGN KEY ([CategoryId])
-    REFERENCES [dbo].[CategorySet]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_PostCategory'
-CREATE INDEX [IX_FK_PostCategory]
-ON [dbo].[PostSet]
-    ([CategoryId]);
-GO
-
 -- Creating foreign key on [UserId] in table 'PaymentSet'
 ALTER TABLE [dbo].[PaymentSet]
 ADD CONSTRAINT [FK_UserPayment]
@@ -307,21 +276,6 @@ GO
 CREATE INDEX [IX_FK_UserPayment]
 ON [dbo].[PaymentSet]
     ([UserId]);
-GO
-
--- Creating foreign key on [CategoryProductId] in table 'ProductSet'
-ALTER TABLE [dbo].[ProductSet]
-ADD CONSTRAINT [FK_ProductCategoryProduct]
-    FOREIGN KEY ([CategoryProductId])
-    REFERENCES [dbo].[CategoryProductSet]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ProductCategoryProduct'
-CREATE INDEX [IX_FK_ProductCategoryProduct]
-ON [dbo].[ProductSet]
-    ([CategoryProductId]);
 GO
 
 -- Creating foreign key on [UserId] in table 'CartSet'
@@ -397,6 +351,36 @@ GO
 CREATE INDEX [IX_FK_PaymentProductAccess]
 ON [dbo].[PaymentSet]
     ([ProductAccess_Id]);
+GO
+
+-- Creating foreign key on [PostId] in table 'CommentSet'
+ALTER TABLE [dbo].[CommentSet]
+ADD CONSTRAINT [FK_PostComment]
+    FOREIGN KEY ([PostId])
+    REFERENCES [dbo].[PostSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PostComment'
+CREATE INDEX [IX_FK_PostComment]
+ON [dbo].[CommentSet]
+    ([PostId]);
+GO
+
+-- Creating foreign key on [UserId] in table 'CommentSet'
+ALTER TABLE [dbo].[CommentSet]
+ADD CONSTRAINT [FK_UserComment]
+    FOREIGN KEY ([UserId])
+    REFERENCES [dbo].[UserSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserComment'
+CREATE INDEX [IX_FK_UserComment]
+ON [dbo].[CommentSet]
+    ([UserId]);
 GO
 
 -- --------------------------------------------------

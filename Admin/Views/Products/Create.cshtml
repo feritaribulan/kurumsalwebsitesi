@@ -39,8 +39,8 @@
         <div class="form-group">
             <span class="control-label col-md-2"><b>Fiyat</b></span>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.pay, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.pay, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -53,5 +53,5 @@
 }
 
 <div>
-    @Html.ActionLink("Kategorilere Geri Dön", "Index")
+    @Html.ActionLink("Ürünlere Geri Dön", "Index")
 </div>

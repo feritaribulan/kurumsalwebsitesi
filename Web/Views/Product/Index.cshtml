@@ -25,47 +25,37 @@
             <td>@product.Id</td>
             <td>@product.title</td>
             <td>@Html.Raw(product.text)</td>
-            <td>@product.pay TL</td>
+            <td>@product.Price TL</td>
             <td>
-                @if ()
+                @if (Web.Helpers.UserHelper.isMember() == true)
                 {
-
-                }
-            </td>
-            <td>
-                @if (UserHelper.isMember() == true)
-                {
-                    if (project.ProjectAccess.FirstOrDefault(q => q.UserId == UserHelper.Current().Id) == null)
+                    if (product.ProductAccess.FirstOrDefault(q => q.UserId == Web.Helpers.UserHelper.Current().Id) == null)
                     {
-                        @Html.ActionLink("Hızlı Satın Al", "Index", "Credit", new { id = project.Id }, null)
+                        @Html.ActionLink("Hızlı Satın Al", "Index", "Credit", new { id = product.Id }, null)
                     }
                     else
                     {
-                        @Html.ActionLink("İndir", "Download", "Projects", new { id = project.Id }, null)
+                        @Html.ActionLink("İndir", "Download", "Projects", new { id = product.Id }, null)
 
                     }
-                }
-                else
-                {
-                    @Html.ActionLink("İndirmek için giriş yap", "LoginForm", "User")
                 }
             </td>
             @{
                 string statusAdd = String.Empty;
                 string statusRemove = "hide";
 
-                if (UserHelper.isMember() == true)
+                if (Web.Helpers.UserHelper.isMember() == true)
                 {
-                    if (project.Cart.FirstOrDefault(q =>
-                            q.Status == Data.CartStatus.New &&
-                            q.UserId == UserHelper.Current().Id &&
-                            q.ProjectId == project.Id) != null
+                    if (product.Cart.FirstOrDefault(q =>
+                            q.Statu == Data.CartStatus.New &&
+                            q.UserId == Web.Helpers.UserHelper.Current().Id &&
+                            q.ProductId == product.Id) != null
                         )
                     {
                         statusAdd = "hide";
                         statusRemove = String.Empty;
                     }
-                    else if (project.ProjectAccess.FirstOrDefault(q => q.UserId == UserHelper.Current().Id) != null)
+                    else if (product.ProductAccess.FirstOrDefault(q => q.UserId == Web.Helpers.UserHelper.Current().Id) != null)
                     {
                         statusAdd = "hide";
                         statusRemove = "hide";
@@ -73,13 +63,13 @@
                     }
                 }
 
-                <td id="tdAdd@(project.Id)" class="@statusAdd">
-                    @Ajax.ActionLink("Sepete Ekle", "AddToCart", new { @id = project.Id },
+                <td id="tdAdd@(product.Id)" class="@statusAdd">
+                    @Ajax.ActionLink("Sepete Ekle", "AddToCart", new { @id = product.Id },
                         new AjaxOptions { HttpMethod = "POST", OnSuccess = "ToggleCartButtons" })
                 </td>
 
-                <td id="tdRemove@(project.Id)" class="@statusRemove">
-                    @Ajax.ActionLink("Çıkar", "RemoveFromCart", new { @id = project.Id },
+                <td id="tdRemove@(product.Id)" class="@statusRemove">
+                    @Ajax.ActionLink("Çıkar", "RemoveFromCart", new { @id = product.Id },
                   new AjaxOptions { HttpMethod = "POST", OnSuccess = "ToggleCartButtons" })
                 </td>
 
@@ -87,7 +77,7 @@
         </tr>
                 }
 </table>
-@section js{
+@section js{1
     <script src="/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script>
         function ToggleCartButtons(result) {

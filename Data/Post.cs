@@ -14,14 +14,20 @@ namespace Data
     
     public partial class Post
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Post()
+        {
+            this.Comment = new HashSet<Comment>();
+        }
+    
         public int Id { get; set; }
         public string title { get; set; }
         public string text { get; set; }
         public string date { get; set; }
         public int UserId { get; set; }
-        public int CategoryId { get; set; }
     
         public virtual User User { get; set; }
-        public virtual Category Category { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Comment> Comment { get; set; }
     }
 }
